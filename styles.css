@@ -1,6 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@500;600;700;800&display=swap");
-
-:root { --ink:#0a111d; --ink-2:#111b2a; --navy:#102640; --gold:#d7ae54; --gold-light:#f3d985; --red:#d91d2a; --paper:#f6f5f1; --soft:#eceae4; --line:rgba(11,20,34,.15); --muted:#5b6470; --white:#fff; --gutter:clamp(22px,6vw,104px); --display:"Manrope",Arial,sans-serif; --body:"DM Sans",Arial,sans-serif; --ease:cubic-bezier(.2,.75,.16,1); }
+:root { --ink:#0a111d; --ink-2:#111b2a; --navy:#102640; --gold:#d7ae54; --gold-light:#f3d985; --red:#d91d2a; --paper:#f6f5f1; --soft:#eceae4; --line:rgba(11,20,34,.15); --muted:#5b6470; --white:#fff; --gutter:clamp(22px,6vw,104px); --display:"Plus Jakarta Sans","Segoe UI",Helvetica,Arial,sans-serif; --body:"Inter","Segoe UI",Helvetica,Arial,sans-serif; --ease:cubic-bezier(.2,.75,.16,1); }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; scroll-padding-top:88px; }
 body { margin:0; color:var(--ink); background:var(--paper); font:15px/1.55 var(--body); -webkit-font-smoothing:antialiased; }
@@ -206,3 +204,9 @@ input,select,textarea { max-width:100%; font-size:16px; }
   .director-grid,.introduction-grid,.info-grid,.vision-grid,.corporate-layout { grid-template-columns:minmax(0,1fr); }
   .corporate-menu,.corporate-statement,.director-copy,.info-table { min-width:0; }
 }
+
+/* ===== Typography: Plus Jakarta Sans (headings) + Inter (body) ===== */
+body { font-family:var(--body); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; }
+h1,h2,h3,h4,.brand,.button,.eyebrow,.section-marker,.main-nav a { font-family:var(--display); }
+.hero h1 { letter-spacing:-.06em; }
+input,select,textarea,button { font-family:var(--body); }
