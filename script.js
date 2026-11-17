@@ -35,13 +35,6 @@
     revealItems.forEach((item) => item.classList.add("is-visible"));
   }
 
-  const teamCards = [...document.querySelectorAll(".team-card")];
-  const teamStatus = document.querySelector(".team-status");
-  teamCards.forEach((card) => card.addEventListener("click", () => {
-    teamCards.forEach((item) => item.classList.toggle("is-active", item === card));
-    if (teamStatus) teamStatus.textContent = `${card.dataset.role} selected`;
-  }));
-
   const lightbox = document.querySelector("#lightbox");
   const lightboxImage = lightbox?.querySelector("img");
   const lightboxCaption = lightbox?.querySelector("p");
