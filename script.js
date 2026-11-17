@@ -58,12 +58,10 @@
 
   const quotationForm = document.querySelector("#quotation-form");
   const formMessage = quotationForm?.querySelector(".form-message");
-  quotationForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (!quotationForm.reportValidity()) return;
 
+  const collectFields = () => {
     const data = new FormData(quotationForm);
-    const fields = [
+    return [
       ["Name", data.get("name")],
       ["Company / Organisation", data.get("company")],
       ["Phone", data.get("phone")],
@@ -73,11 +71,55 @@
       ["Guards Required", data.get("guards")],
       ["Service Start Date", data.get("date")],
       ["Security Requirements", data.get("requirements")]
-    ].filter(([, value]) => value);
+    ];
+  };
 
-    const message = ["Quotation Request — Mega Safe Security Services", "", ...fields.map(([label, value]) => `${label}: ${value}`)].join("\n");
+  quotationForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!quotationForm.reportValidity()) return;
+
+    const fields = collectFields().filter(([, value]) => value);
+    const message = ["Quotation Request — Mega Safe Security Services Sdn Bhd", "", ...fields.map(([label, value]) => `${label}: ${value}`)].join("\n");
     const whatsappUrl = `https://wa.me/60109142789?text=${encodeURIComponent(message)}`;
     if (formMessage) formMessage.textContent = "Opening WhatsApp with your quotation details…";
     window.open(whatsappUrl, "_blank", "noopener");
+  });
+
+  // Email: opens the customer's email app with a standard Request Quotation format
+  // addressed to Mega Safe (blank fields are marked "-").
+  document.querySelector("#send-email")?.addEventListener("click", () => {
+    if (!quotationForm.reportValidity()) return;
+
+    const fields = collectFields();
+    const value = (v) => (v && String(v).trim()) || "-";
+    const company = value(fields[1][1]);
+    const subject = `Request for Quotation - ${company} - Mega Safe Security Services Sdn Bhd`;
+    const body = [
+      "REQUEST FOR QUOTATION",
+      "Mega Safe Security Services Sdn Bhd",
+      "======================================",
+      "",
+      "CUSTOMER DETAILS",
+      `Name / Contact Person : ${value(fields[0][1])}`,
+      `Company / Organisation : ${company}`,
+      `Phone Number : ${value(fields[2][1])}`,
+      `Email : ${value(fields[3][1])}`,
+      "",
+      "SECURITY REQUIREMENT",
+      `Premises Location : ${value(fields[4][1])}`,
+      `Premises Type : ${value(fields[5][1])}`,
+      `Estimated Number of Guards Required : ${value(fields[6][1])}`,
+      `Service Start Date : ${value(fields[7][1])}`,
+      "",
+      "SCOPE OF WORK / SECURITY REQUIREMENTS",
+      value(fields[8][1]),
+      "",
+      "--------------------------------------",
+      "Sent from the Mega Safe website quotation form."
+    ].join("\r\n");
+
+    const mailtoUrl = `mailto:mymegasafe.security@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    if (formMessage) formMessage.textContent = "Opening your email app with the quotation request…";
+    window.location.href = mailtoUrl;
   });
 })();
