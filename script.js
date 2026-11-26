@@ -34,6 +34,9 @@
   } else {
     revealItems.forEach((item) => item.classList.add("is-visible"));
   }
+  // Enable reveal hiding only after this script has initialized.
+  // If JS fails to load, the page remains visible rather than blank.
+  document.documentElement.classList.add("reveal-ready");
 
   const lightbox = document.querySelector("#lightbox");
   const lightboxImage = lightbox?.querySelector("img");
