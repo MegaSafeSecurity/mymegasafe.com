@@ -116,3 +116,25 @@
     window.location.href = mailtoUrl;
   });
 })();
+// Compact corporate navigation: detailed pages stay out of the homepage layout.
+(() => {
+  const toggle = document.querySelector('.explore-toggle');
+  const panel = document.querySelector('#explore-panel');
+  if (!toggle || !panel) return;
+  const close = () => {
+    toggle.setAttribute('aria-expanded', 'false');
+    panel.hidden = true;
+  };
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    panel.hidden = open;
+  });
+  panel.querySelectorAll('a').forEach(link => link.addEventListener('click', close));
+  document.addEventListener('click', event => {
+    if (!panel.hidden && !panel.contains(event.target) && !toggle.contains(event.target)) close();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') close();
+  });
+})();
