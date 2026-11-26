@@ -138,3 +138,46 @@
     if (event.key === 'Escape') close();
   });
 })();
+
+// Interactive 3D Mega Safe emblem: rotates only while the visitor drags it.
+(() => {
+  const emblem = document.querySelector('.hero-emblem');
+  const logo = emblem?.querySelector('img');
+  if (!emblem || !logo) return;
+  let activePointer = null;
+  let lastX = 0;
+  let lastY = 0;
+  let rotateY = 0;
+  let rotateX = 0;
+  const render = () => {
+    logo.style.transform = `translateZ(24px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+  emblem.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    activePointer = event.pointerId;
+    lastX = event.clientX;
+    lastY = event.clientY;
+    emblem.classList.add('is-dragging');
+    emblem.setPointerCapture(event.pointerId);
+  });
+  emblem.addEventListener('pointermove', (event) => {
+    if (activePointer !== event.pointerId) return;
+    rotateY += (event.clientX - lastX) * 0.72;
+    rotateX -= (event.clientY - lastY) * 0.48;
+    rotateX = Math.max(-24, Math.min(24, rotateX));
+    lastX = event.clientX;
+    lastY = event.clientY;
+    render();
+  });
+  const stop = (event) => {
+    if (activePointer !== event.pointerId) return;
+    activePointer = null;
+    emblem.classList.remove('is-dragging');
+  };
+  emblem.addEventListener('pointerup', stop);
+  emblem.addEventListener('pointercancel', stop);
+  emblem.addEventListener('lostpointercapture', () => {
+    activePointer = null;
+    emblem.classList.remove('is-dragging');
+  });
+})();
